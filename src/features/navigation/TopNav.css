@@ -1,0 +1,140 @@
+.top-nav {
+  background: var(--color-nav-bg);
+  color: var(--color-nav-text);
+  height: var(--nav-height);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.top-nav__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 16px;
+  padding-right: 0;
+}
+
+.top-nav__center {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 0;
+}
+
+.top-nav__right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 var(--spacing-xxl);
+  gap: 12px;
+}
+
+.top-nav__logo {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.top-nav__logo svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.top-nav__actions {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.top-nav__btn {
+  background: transparent;
+  border: none;
+  color: #86868b;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 5px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.top-nav__btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  stroke-width: 1.6px;
+}
+
+.top-nav__btn:hover {
+  background: rgba(0, 0, 0, 0.035);
+  color: #48484a;
+}
+
+.top-nav__btn:active {
+  background: rgba(0, 0, 0, 0.055);
+}
+
+.top-nav__btn--is-active {
+  background: rgba(0, 0, 0, 0.06);
+  color: #3a3a3c;
+}
+
+.top-nav__btn--is-active:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.top-nav__formatting {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding-left: 12px;
+  margin-left: 12px;
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.top-nav__btn--format {
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+}
+
+.top-nav__btn--format svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 1.7px;
+}
+
+.top-nav__layout-controls {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.top-nav__layout-controls .top-nav__btn {
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.top-nav__layout-controls .top-nav__btn svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.6px;
+}
+
+.top-nav__layout-controls .top-nav__btn--is-active {
+  background: rgba(0, 0, 0, 0.06);
+  color: #2c2c2e;
+}
+
+.top-nav__layout-controls .top-nav__btn--is-active:hover {
+  background: rgba(0, 0, 0, 0.08);
+}

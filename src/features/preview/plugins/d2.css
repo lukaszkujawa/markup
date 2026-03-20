@@ -1,0 +1,142 @@
+.d2-diagram {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 3em 0;
+  margin: 3em 0;
+  overflow-x: auto;
+  position: relative;
+}
+
+.d2-diagram .diagram-content {
+  padding: 2em;
+  background: rgba(250, 250, 249, 0.4);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.d2-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.d2-diagram svg text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.01em;
+  fill: #2c2c2c;
+  font-weight: 500;
+}
+
+.d2-diagram svg .text-bold text {
+  font-weight: 600;
+}
+
+.d2-diagram svg [fill="#0D32B2"],
+.d2-diagram svg [fill="rgb(13, 50, 178)"],
+.d2-diagram svg [fill="#4A6FF3"],
+.d2-diagram svg [fill="rgb(74, 111, 243)"],
+.d2-diagram svg [fill*="blue"] {
+  fill: #7985a3;
+}
+
+.d2-diagram svg [stroke="#0D32B2"],
+.d2-diagram svg [stroke="rgb(13, 50, 178)"],
+.d2-diagram svg [stroke="#4A6FF3"],
+.d2-diagram svg [stroke="rgb(74, 111, 243)"],
+.d2-diagram svg [stroke*="blue"] {
+  stroke: #7985a3;
+}
+
+.d2-diagram svg rect[fill="white"],
+.d2-diagram svg rect[fill="#FFFFFF"],
+.d2-diagram svg rect[fill="rgb(255, 255, 255)"] {
+  fill: #fafaf9;
+}
+
+.d2-diagram svg rect,
+.d2-diagram svg path,
+.d2-diagram svg line,
+.d2-diagram svg polyline {
+  stroke-width: 1.5;
+}
+
+.d2-diagram svg circle,
+.d2-diagram svg ellipse {
+  stroke-width: 1.5;
+}
+
+.d2-diagram svg marker path,
+.d2-diagram svg marker polygon {
+  fill: #7985a3;
+  stroke: none;
+}
+
+.d2-diagram svg .connection path,
+.d2-diagram svg .edge path {
+  stroke: #939eb8;
+  stroke-width: 1.5;
+}
+
+.d2-diagram svg .shape {
+  stroke: #7985a3;
+}
+
+.d2-diagram svg .label text {
+  fill: #2c2c2c;
+  font-size: 13px;
+}
+
+.d2-diagram--loading {
+  padding: 3em 0;
+}
+
+.d2-diagram--loading p {
+  text-align: center;
+  margin: 0;
+  padding: 3em;
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: 13px;
+  background: rgba(250, 250, 249, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.d2-diagram--error {
+  padding: 3em 0;
+}
+
+.d2-diagram--error p {
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-md);
+  color: #a85a5a;
+  font-size: 13px;
+}
+
+.d2-diagram--error pre {
+  background: rgba(168, 90, 90, 0.06);
+  padding: var(--spacing-md);
+  border-radius: 6px;
+  border: 1px solid rgba(168, 90, 90, 0.1);
+  font-size: 12px;
+  overflow-x: auto;
+  margin: 0;
+  color: #8b4545;
+  line-height: 1.6;
+}
+
+.d2-diagram--empty {
+  padding: 3em 0;
+}
+
+.d2-diagram--empty p {
+  text-align: center;
+  margin: 0;
+  padding: 3em;
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: 13px;
+  background: rgba(250, 250, 249, 0.3);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}

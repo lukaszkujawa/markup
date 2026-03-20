@@ -1,0 +1,37 @@
+.svg-diagram {
+  margin: 2em 0;
+  padding: var(--spacing-xxl);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--border-radius);
+  position: relative;
+  min-height: 120px;
+}
+
+.svg-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.svg-diagram--error {
+  background: var(--color-error-background);
+  border-color: var(--color-error);
+  flex-direction: column;
+  padding: var(--spacing-lg);
+}
+
+.svg-diagram--error p {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.svg-diagram--error pre {
+  margin: 0;
+  padding: var(--spacing-sm);
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  overflow-x: auto;
+}

@@ -1,0 +1,37 @@
+{
+  "name": "markup",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "copy-docs": "node scripts/copy-docs.cjs",
+    "dev": "npm run copy-docs && vite",
+    "build": "npm run copy-docs && tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "clean": "node scripts/clean-state.cjs"
+  },
+  "dependencies": {
+    "@codemirror/lang-markdown": "^6.5.0",
+    "@codemirror/language": "^6.12.2",
+    "@codemirror/language-data": "^6.5.2",
+    "@codemirror/state": "^6.6.0",
+    "@codemirror/theme-one-dark": "^6.1.3",
+    "@codemirror/view": "^6.40.0",
+    "@lezer/highlight": "^1.2.3",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-dialog": "^2.6.0",
+    "@tauri-apps/plugin-fs": "^2.4.5",
+    "@tauri-apps/plugin-opener": "^2",
+    "@terrastruct/d2": "^0.1.33",
+    "codemirror": "^6.0.2",
+    "highlight.js": "^11.11.1",
+    "html2pdf.js": "^0.14.0",
+    "marked": "^17.0.4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3"
+  }
+}

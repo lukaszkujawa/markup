@@ -1,0 +1,67 @@
+:root {
+  --color-primary: #2c2c2c;
+  --color-secondary: #666;
+  --color-accent: #7985a3;
+  --color-accent-muted: #939eb8;
+  --color-text: #1c1c1e;
+  --color-text-light: #6e6e73;
+  --color-text-muted: #a1a1a6;
+  --color-background: #fafaf9;
+  --color-background-sidebar: #f5f5f4;
+  --color-background-editor: #fafaf9;
+  --color-background-preview: #fffcf7;
+  --color-background-nav: #fdfdfb;
+  --color-border: #e7e7e5;
+  --color-border-light: #ebebea;
+  --color-border-hairline: #f2f2f1;
+  --color-nav-bg: #fdfdfb;
+  --color-nav-text: #1c1c1e;
+  --color-footer-bg: #fafaf9;
+  --color-footer-text: #6e6e73;
+  --color-toolbar-bg: #fdfdfb;
+  --color-toolbar-border: #e7e7e5;
+  --color-hover: rgba(0, 0, 0, 0.04);
+  --color-active: rgba(0, 0, 0, 0.06);
+
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "SF Mono", Monaco, Consolas, "Courier New", monospace;
+  --font-size-base: 13px;
+  --font-size-sm: 12px;
+  --font-size-xs: 11px;
+  --font-size-lg: 15px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 26px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-base: 1.65;
+  --line-height-tight: 1.35;
+  --line-height-relaxed: 1.7;
+  --line-height-heading: 1.25;
+
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 0.75rem;
+  --spacing-lg: 1rem;
+  --spacing-xl: 1.5rem;
+  --spacing-xxl: 2rem;
+  --spacing-xxxl: 3rem;
+
+  --border-radius: 6px;
+  --border-radius-sm: 4px;
+  --border-width: 1px;
+
+  --transition-speed: 0.2s;
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --nav-height: 52px;
+  --toolbar-height: 52px;
+  --footer-height: 28px;
+  --file-nav-width: 240px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
