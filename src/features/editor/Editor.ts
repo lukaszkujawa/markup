@@ -121,6 +121,7 @@ export function initEditor(): EditorView {
     parent: container,
   });
 
+
   const editorSection = container.closest('.editor');
   if (editorSection) {
     const handleScroll = () => {

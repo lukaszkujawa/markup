@@ -66,7 +66,8 @@ async function initApp() {
     if (editorView && editorView.hasFocus) {
       const selection = editorView.state.selection.main;
       const text = editorView.state.sliceDoc(selection.from, selection.to);
-      await navigator.clipboard.writeText(text);
+      const { writeText } = await import('@tauri-apps/plugin-clipboard-manager');
+      await writeText(text);
       editorView.dispatch({
         changes: { from: selection.from, to: selection.to, insert: '' }
       });
@@ -78,19 +79,23 @@ async function initApp() {
     if (editorView && editorView.hasFocus) {
       const selection = editorView.state.selection.main;
       const text = editorView.state.sliceDoc(selection.from, selection.to);
-      await navigator.clipboard.writeText(text);
+      const { writeText } = await import('@tauri-apps/plugin-clipboard-manager');
+      await writeText(text);
     }
   });
 
   await listen('menu:paste', async () => {
     const editorView = (await import('./features/editor')).getEditorView();
     if (editorView && editorView.hasFocus) {
-      const text = await navigator.clipboard.readText();
-      const selection = editorView.state.selection.main;
-      editorView.dispatch({
-        changes: { from: selection.from, to: selection.to, insert: text },
-        selection: { anchor: selection.from + text.length }
-      });
+      const { readText } = await import('@tauri-apps/plugin-clipboard-manager');
+      const text = await readText();
+      if (text) {
+        const selection = editorView.state.selection.main;
+        editorView.dispatch({
+          changes: { from: selection.from, to: selection.to, insert: text },
+          selection: { anchor: selection.from + text.length }
+        });
+      }
     }
   });
 

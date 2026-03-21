@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
-use tauri::{Manager, Emitter};
 use tauri::menu::{MenuBuilder, MenuItemBuilder, SubmenuBuilder};
+use tauri::{Emitter, Manager};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct FileSystemEntry {
@@ -95,9 +95,13 @@ fn list_notes(app: tauri::AppHandle) -> Result<Vec<FileSystemEntry>, String> {
     let notes_dir = get_notes_dir(app)?;
     let mut entries = Vec::new();
 
-    fn scan_directory(dir: &PathBuf, base_dir: &PathBuf, entries: &mut Vec<FileSystemEntry>) -> Result<(), String> {
-        let read_dir = fs::read_dir(dir)
-            .map_err(|e| format!("Failed to read directory {:?}: {}", dir, e))?;
+    fn scan_directory(
+        dir: &PathBuf,
+        base_dir: &PathBuf,
+        entries: &mut Vec<FileSystemEntry>,
+    ) -> Result<(), String> {
+        let read_dir =
+            fs::read_dir(dir).map_err(|e| format!("Failed to read directory {:?}: {}", dir, e))?;
 
         for entry in read_dir {
             let entry = entry.map_err(|e| format!("Failed to read entry: {}", e))?;
@@ -108,15 +112,19 @@ fn list_notes(app: tauri::AppHandle) -> Result<Vec<FileSystemEntry>, String> {
                 continue;
             }
 
-            let relative_path = path.strip_prefix(base_dir)
+            let relative_path = path
+                .strip_prefix(base_dir)
                 .map_err(|e| format!("Failed to get relative path: {}", e))?
                 .to_string_lossy()
                 .to_string();
 
-            let metadata = entry.metadata()
+            let metadata = entry
+                .metadata()
                 .map_err(|e| format!("Failed to read metadata: {}", e))?;
 
-            let modified_at = metadata.modified().ok()
+            let modified_at = metadata
+                .modified()
+                .ok()
                 .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
                 .map(|duration| duration.as_secs());
 
@@ -154,8 +162,7 @@ fn read_note(app: tauri::AppHandle, relative_path: String) -> Result<String, Str
         return Err("Invalid path: attempting to access outside notes directory".to_string());
     }
 
-    fs::read_to_string(&note_path)
-        .map_err(|e| format!("Failed to read note: {}", e))
+    fs::read_to_string(&note_path).map_err(|e| format!("Failed to read note: {}", e))
 }
 
 #[tauri::command]
@@ -172,8 +179,7 @@ fn write_note(app: tauri::AppHandle, relative_path: String, content: String) -> 
             .map_err(|e| format!("Failed to create parent directories: {}", e))?;
     }
 
-    fs::write(&note_path, content)
-        .map_err(|e| format!("Failed to write note: {}", e))
+    fs::write(&note_path, content).map_err(|e| format!("Failed to write note: {}", e))
 }
 
 #[tauri::command]
@@ -185,8 +191,7 @@ fn delete_note(app: tauri::AppHandle, relative_path: String) -> Result<(), Strin
         return Err("Invalid path: attempting to access outside notes directory".to_string());
     }
 
-    fs::remove_file(&note_path)
-        .map_err(|e| format!("Failed to delete note: {}", e))
+    fs::remove_file(&note_path).map_err(|e| format!("Failed to delete note: {}", e))
 }
 
 #[tauri::command]
@@ -198,8 +203,7 @@ fn create_folder(app: tauri::AppHandle, relative_path: String) -> Result<(), Str
         return Err("Invalid path: attempting to access outside notes directory".to_string());
     }
 
-    fs::create_dir_all(&folder_path)
-        .map_err(|e| format!("Failed to create folder: {}", e))
+    fs::create_dir_all(&folder_path).map_err(|e| format!("Failed to create folder: {}", e))
 }
 
 #[tauri::command]
@@ -211,8 +215,7 @@ fn delete_folder(app: tauri::AppHandle, relative_path: String) -> Result<(), Str
         return Err("Invalid path: attempting to access outside notes directory".to_string());
     }
 
-    fs::remove_dir_all(&folder_path)
-        .map_err(|e| format!("Failed to delete folder: {}", e))
+    fs::remove_dir_all(&folder_path).map_err(|e| format!("Failed to delete folder: {}", e))
 }
 
 #[tauri::command]
@@ -223,16 +226,14 @@ fn read_metadata(app: tauri::AppHandle) -> Result<String, String> {
         return Ok("{}".to_string());
     }
 
-    fs::read_to_string(&metadata_path)
-        .map_err(|e| format!("Failed to read metadata: {}", e))
+    fs::read_to_string(&metadata_path).map_err(|e| format!("Failed to read metadata: {}", e))
 }
 
 #[tauri::command]
 fn write_metadata(app: tauri::AppHandle, metadata: String) -> Result<(), String> {
     let metadata_path = get_metadata_path(app)?;
 
-    fs::write(&metadata_path, metadata)
-        .map_err(|e| format!("Failed to write metadata: {}", e))
+    fs::write(&metadata_path, metadata).map_err(|e| format!("Failed to write metadata: {}", e))
 }
 
 #[tauri::command]
@@ -250,8 +251,7 @@ fn move_note(app: tauri::AppHandle, old_path: String, new_path: String) -> Resul
             .map_err(|e| format!("Failed to create parent directories: {}", e))?;
     }
 
-    fs::rename(&old_note_path, &new_note_path)
-        .map_err(|e| format!("Failed to move note: {}", e))
+    fs::rename(&old_note_path, &new_note_path).map_err(|e| format!("Failed to move note: {}", e))
 }
 
 #[tauri::command]
@@ -281,6 +281,7 @@ fn greet(name: &str) -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
@@ -303,9 +304,7 @@ pub fn run() {
                 .accelerator("CmdOrCtrl+Q")
                 .build(app)?;
 
-            let app_menu = SubmenuBuilder::new(app, "Markup")
-                .item(&quit)
-                .build()?;
+            let app_menu = SubmenuBuilder::new(app, "Markup").item(&quit).build()?;
 
             let undo = MenuItemBuilder::with_id("undo", "Undo")
                 .accelerator("CmdOrCtrl+Z")
@@ -354,37 +353,35 @@ pub fn run() {
 
             app.set_menu(menu)?;
 
-            app.on_menu_event(move |app, event| {
-                match event.id().as_ref() {
-                    "quit" => {
-                        app.exit(0);
-                    }
-                    "undo" => {
-                        let _ = app.emit("menu:undo", ());
-                    }
-                    "redo" => {
-                        let _ = app.emit("menu:redo", ());
-                    }
-                    "cut" => {
-                        let _ = app.emit("menu:cut", ());
-                    }
-                    "copy" => {
-                        let _ = app.emit("menu:copy", ());
-                    }
-                    "paste" => {
-                        let _ = app.emit("menu:paste", ());
-                    }
-                    "increase_font" => {
-                        let _ = app.emit("menu:increase-font", ());
-                    }
-                    "decrease_font" => {
-                        let _ = app.emit("menu:decrease-font", ());
-                    }
-                    "reset_font" => {
-                        let _ = app.emit("menu:reset-font", ());
-                    }
-                    _ => {}
+            app.on_menu_event(move |app, event| match event.id().as_ref() {
+                "quit" => {
+                    app.exit(0);
                 }
+                "undo" => {
+                    let _ = app.emit("menu:undo", ());
+                }
+                "redo" => {
+                    let _ = app.emit("menu:redo", ());
+                }
+                "cut" => {
+                    let _ = app.emit("menu:cut", ());
+                }
+                "copy" => {
+                    let _ = app.emit("menu:copy", ());
+                }
+                "paste" => {
+                    let _ = app.emit("menu:paste", ());
+                }
+                "increase_font" => {
+                    let _ = app.emit("menu:increase-font", ());
+                }
+                "decrease_font" => {
+                    let _ = app.emit("menu:decrease-font", ());
+                }
+                "reset_font" => {
+                    let _ = app.emit("menu:reset-font", ());
+                }
+                _ => {}
             });
 
             Ok(())
