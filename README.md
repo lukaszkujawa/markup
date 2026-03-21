@@ -2,6 +2,12 @@
 
 A desktop markdown editor with real-time preview, built with Tauri, TypeScript, and CodeMirror 6.
 
+## Download
+
+**[Download for macOS (Apple Silicon)](https://github.com/lukaszkujawa/markup/releases/latest/download/Markup_latests_aarch64.dmg)**
+
+Or view [all releases](https://github.com/lukaszkujawa/markup/releases).
+
 ## Features
 
 - Real-time markdown preview with synchronized scrolling

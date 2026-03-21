@@ -8,6 +8,8 @@ dist-ssr/
 
 # Tauri build outputs
 src-tauri/target/
+*.dmg
+*.app
 
 # Logs
 logs
