@@ -10,13 +10,19 @@ interface ViewState {
 function svgToImage(svgElement: SVGElement): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const svgString = new XMLSerializer().serializeToString(svgElement);
-    const blob = new Blob([svgString], { type: 'image/svg+xml' });
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
 
     const img = new Image();
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      resolve(img);
+    img.onload = async () => {
+      try {
+        await img.decode();
+        URL.revokeObjectURL(url);
+        resolve(img);
+      } catch (err) {
+        URL.revokeObjectURL(url);
+        reject(err);
+      }
     };
     img.onerror = () => {
       URL.revokeObjectURL(url);
@@ -91,11 +97,17 @@ export function openFullscreen(diagramId: string): void {
     lastMouseY: 0,
   };
 
-  svgToImage(svgElement).then((image) => {
-    viewState.offsetX = (canvas.width - image.width) / 2;
-    viewState.offsetY = (canvas.height - image.height) / 2;
+  setTimeout(() => {
+    svgToImage(svgElement).then((image) => {
+      viewState.offsetX = (canvas.width - image.width) / 2;
+      viewState.offsetY = (canvas.height - image.height) / 2;
 
-    drawCanvas(canvas, ctx, image, viewState);
+      requestAnimationFrame(() => {
+        drawCanvas(canvas, ctx, image, viewState);
+        requestAnimationFrame(() => {
+          drawCanvas(canvas, ctx, image, viewState);
+        });
+      });
 
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
@@ -147,11 +159,12 @@ export function openFullscreen(diagramId: string): void {
       canvas.style.cursor = 'grab';
     });
 
-    canvas.style.cursor = 'grab';
-  }).catch((err) => {
-    console.error('Failed to render diagram in fullscreen:', err);
-    overlay.remove();
-  });
+      canvas.style.cursor = 'grab';
+    }).catch((err) => {
+      console.error('Failed to render diagram in fullscreen:', err);
+      overlay.remove();
+    });
+  }, 50);
 
   const closeBtn = overlay.querySelector('.diagram-fullscreen-close');
   const closeFullscreen = () => {

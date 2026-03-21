@@ -1,4 +1,4 @@
-import { createNote, createNoteFolder as createFolder, deleteNote, getState, setState, subscribe, increaseFontSize, decreaseFontSize, resetFontSize } from '../../core';
+import { createNote, createNoteFolder as createFolder, deleteNote, getState, setState, subscribe } from '../../core';
 import { ask } from '@tauri-apps/plugin-dialog';
 import { getEditorView } from '../editor';
 import { applyBold, applyItalic, applyHeading, applyCode, applyLink, applyList, applyQuote, applyTable } from '../editor/formatting';

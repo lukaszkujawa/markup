@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.d2-diagram .diagram-controls {
+  top: calc(3em + 24px);
+}
+
 .d2-diagram .diagram-content {
   padding: 2em;
   background: rgba(250, 250, 249, 0.4);

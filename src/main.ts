@@ -45,24 +45,53 @@ async function initApp() {
 
   window.addEventListener('keydown', handleGlobalKeydown);
 
-  await listen('menu:undo', () => {
-    document.execCommand('undo');
+  await listen('menu:undo', async () => {
+    const editorView = (await import('./features/editor')).getEditorView();
+    if (editorView) {
+      const { undo } = await import('@codemirror/commands');
+      undo(editorView);
+    }
   });
 
-  await listen('menu:redo', () => {
-    document.execCommand('redo');
+  await listen('menu:redo', async () => {
+    const editorView = (await import('./features/editor')).getEditorView();
+    if (editorView) {
+      const { redo } = await import('@codemirror/commands');
+      redo(editorView);
+    }
   });
 
-  await listen('menu:cut', () => {
-    document.execCommand('cut');
+  await listen('menu:cut', async () => {
+    const editorView = (await import('./features/editor')).getEditorView();
+    if (editorView && editorView.hasFocus) {
+      const selection = editorView.state.selection.main;
+      const text = editorView.state.sliceDoc(selection.from, selection.to);
+      await navigator.clipboard.writeText(text);
+      editorView.dispatch({
+        changes: { from: selection.from, to: selection.to, insert: '' }
+      });
+    }
   });
 
-  await listen('menu:copy', () => {
-    document.execCommand('copy');
+  await listen('menu:copy', async () => {
+    const editorView = (await import('./features/editor')).getEditorView();
+    if (editorView && editorView.hasFocus) {
+      const selection = editorView.state.selection.main;
+      const text = editorView.state.sliceDoc(selection.from, selection.to);
+      await navigator.clipboard.writeText(text);
+    }
   });
 
-  await listen('menu:paste', () => {
-    document.execCommand('paste');
+  await listen('menu:paste', async () => {
+    const editorView = (await import('./features/editor')).getEditorView();
+    if (editorView && editorView.hasFocus) {
+      const text = await navigator.clipboard.readText();
+      const selection = editorView.state.selection.main;
+      editorView.dispatch({
+        changes: { from: selection.from, to: selection.to, insert: text },
+        selection: { anchor: selection.from + text.length }
+      });
+    }
   });
 
   await listen('menu:increase-font', () => {
