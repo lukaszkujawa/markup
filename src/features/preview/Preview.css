@@ -272,3 +272,10 @@
   margin: 0;
   flex: 1;
 }
+
+.preview mark {
+  background: #fff3cd;
+  color: inherit;
+  padding: 0.15em 0.25em;
+  border-radius: 2px;
+}

@@ -86,7 +86,10 @@ export function initPreview(): void {
   };
 
   const updatePreview = () => {
-    const markdown = getCurrentNoteContent();
+    let markdown = getCurrentNoteContent();
+
+    markdown = markdown.replace(/==([^=]+)==/g, '<mark>$1</mark>');
+
     const html = marked(markdown);
     container.innerHTML = html as string;
 

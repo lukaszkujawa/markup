@@ -5,14 +5,39 @@ export function applyBold(view: EditorView): void {
   const selectedText = view.state.sliceDoc(selection.from, selection.to);
 
   if (selectedText) {
-    view.dispatch({
-      changes: {
-        from: selection.from,
-        to: selection.to,
-        insert: `**${selectedText}**`
-      },
-      selection: { anchor: selection.from + 2, head: selection.to + 2 }
-    });
+    if (selectedText.startsWith('**') && selectedText.endsWith('**') && selectedText.length > 4) {
+      const unwrapped = selectedText.slice(2, -2);
+      view.dispatch({
+        changes: {
+          from: selection.from,
+          to: selection.to,
+          insert: unwrapped
+        },
+        selection: { anchor: selection.from, head: selection.from + unwrapped.length }
+      });
+    } else {
+      const beforeTwo = selection.from >= 2 ? view.state.sliceDoc(selection.from - 2, selection.from) : '';
+      const afterTwo = selection.to + 2 <= view.state.doc.length ? view.state.sliceDoc(selection.to, selection.to + 2) : '';
+
+      if (beforeTwo === '**' && afterTwo === '**') {
+        view.dispatch({
+          changes: [
+            { from: selection.from - 2, to: selection.from, insert: '' },
+            { from: selection.to, to: selection.to + 2, insert: '' }
+          ],
+          selection: { anchor: selection.from - 2, head: selection.to - 2 }
+        });
+      } else {
+        view.dispatch({
+          changes: {
+            from: selection.from,
+            to: selection.to,
+            insert: `**${selectedText}**`
+          },
+          selection: { anchor: selection.from + 2, head: selection.to + 2 }
+        });
+      }
+    }
   } else {
     view.dispatch({
       changes: {
@@ -31,14 +56,41 @@ export function applyItalic(view: EditorView): void {
   const selectedText = view.state.sliceDoc(selection.from, selection.to);
 
   if (selectedText) {
-    view.dispatch({
-      changes: {
-        from: selection.from,
-        to: selection.to,
-        insert: `*${selectedText}*`
-      },
-      selection: { anchor: selection.from + 1, head: selection.to + 1 }
-    });
+    if (selectedText.startsWith('*') && selectedText.endsWith('*') && selectedText.length > 2 && !selectedText.startsWith('**')) {
+      const unwrapped = selectedText.slice(1, -1);
+      view.dispatch({
+        changes: {
+          from: selection.from,
+          to: selection.to,
+          insert: unwrapped
+        },
+        selection: { anchor: selection.from, head: selection.from + unwrapped.length }
+      });
+    } else {
+      const beforeOne = selection.from >= 1 ? view.state.sliceDoc(selection.from - 1, selection.from) : '';
+      const afterOne = selection.to + 1 <= view.state.doc.length ? view.state.sliceDoc(selection.to, selection.to + 1) : '';
+      const beforeTwo = selection.from >= 2 ? view.state.sliceDoc(selection.from - 2, selection.from) : '';
+      const afterTwo = selection.to + 2 <= view.state.doc.length ? view.state.sliceDoc(selection.to, selection.to + 2) : '';
+
+      if (beforeOne === '*' && afterOne === '*' && beforeTwo !== '**' && afterTwo !== '**') {
+        view.dispatch({
+          changes: [
+            { from: selection.from - 1, to: selection.from, insert: '' },
+            { from: selection.to, to: selection.to + 1, insert: '' }
+          ],
+          selection: { anchor: selection.from - 1, head: selection.to - 1 }
+        });
+      } else {
+        view.dispatch({
+          changes: {
+            from: selection.from,
+            to: selection.to,
+            insert: `*${selectedText}*`
+          },
+          selection: { anchor: selection.from + 1, head: selection.to + 1 }
+        });
+      }
+    }
   } else {
     view.dispatch({
       changes: {
@@ -57,14 +109,39 @@ export function applyHighlight(view: EditorView): void {
   const selectedText = view.state.sliceDoc(selection.from, selection.to);
 
   if (selectedText) {
-    view.dispatch({
-      changes: {
-        from: selection.from,
-        to: selection.to,
-        insert: `==${selectedText}==`
-      },
-      selection: { anchor: selection.from + 2, head: selection.to + 2 }
-    });
+    if (selectedText.startsWith('==') && selectedText.endsWith('==') && selectedText.length > 4) {
+      const unwrapped = selectedText.slice(2, -2);
+      view.dispatch({
+        changes: {
+          from: selection.from,
+          to: selection.to,
+          insert: unwrapped
+        },
+        selection: { anchor: selection.from, head: selection.from + unwrapped.length }
+      });
+    } else {
+      const beforeTwo = selection.from >= 2 ? view.state.sliceDoc(selection.from - 2, selection.from) : '';
+      const afterTwo = selection.to + 2 <= view.state.doc.length ? view.state.sliceDoc(selection.to, selection.to + 2) : '';
+
+      if (beforeTwo === '==' && afterTwo === '==') {
+        view.dispatch({
+          changes: [
+            { from: selection.from - 2, to: selection.from, insert: '' },
+            { from: selection.to, to: selection.to + 2, insert: '' }
+          ],
+          selection: { anchor: selection.from - 2, head: selection.to - 2 }
+        });
+      } else {
+        view.dispatch({
+          changes: {
+            from: selection.from,
+            to: selection.to,
+            insert: `==${selectedText}==`
+          },
+          selection: { anchor: selection.from + 2, head: selection.to + 2 }
+        });
+      }
+    }
   } else {
     view.dispatch({
       changes: {
