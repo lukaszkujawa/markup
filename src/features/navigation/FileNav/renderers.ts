@@ -3,19 +3,18 @@ import { CONSTANTS } from './constants';
 import { sortNotes, sortFolders, truncateTitle, formatDate, escapeHtml } from './utils';
 
 export function renderFileNav(): string {
+  const state = getState();
+  const isSearchActive = state.searchMode;
+
   return `
     <aside class="file-nav">
       <div class="file-nav__header">
         <div class="file-nav__header-title">Notes</div>
         <div class="file-nav__header-controls">
-          <button class="file-nav__header-button" title="Sort">
+          <button class="file-nav__header-button ${isSearchActive ? 'file-nav__header-button--active' : ''}" id="file-nav-search-btn" title="Search notes">
             <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 4 6 L 16 6 M 6 10 L 16 10 M 8 14 L 16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </button>
-          <button class="file-nav__header-button" title="Filter">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 3 6 L 17 6 L 12 11 L 12 16 L 8 16 L 8 11 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="8.5" cy="8.5" r="5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M 12 12 L 16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </button>
         </div>

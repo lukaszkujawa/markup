@@ -1,4 +1,4 @@
-import { subscribe } from '../../../core';
+import { subscribe, getState, setState } from '../../../core';
 import { CONSTANTS } from './constants';
 import { renderFileNav, updateFileTree } from './renderers';
 import {
@@ -19,6 +19,13 @@ let contextMenuHandler: ((e: Event) => void) | null = null;
 function setupEventListeners(container: Element): void {
   clickHandler = (e) => {
     const target = e.target as HTMLElement;
+
+    const searchBtn = target.closest('#file-nav-search-btn');
+    if (searchBtn) {
+      const state = getState();
+      setState({ searchMode: !state.searchMode });
+      return;
+    }
 
     const folderHeader = target.closest('.file-nav__folder-header') as HTMLElement;
     if (folderHeader) {
@@ -60,10 +67,21 @@ function setupEventListeners(container: Element): void {
   container.addEventListener('contextmenu', contextMenuHandler);
 }
 
+function updateSearchButton(): void {
+  const state = getState();
+  const searchBtn = document.querySelector('#file-nav-search-btn');
+  if (searchBtn) {
+    searchBtn.classList.toggle('file-nav__header-button--active', state.searchMode);
+  }
+}
+
 function setupStateSubscription(): void {
   unsubscribe = subscribe((updates) => {
     if ('notes' in updates || 'currentNotePath' in updates || 'folders' in updates) {
       updateFileTree();
+    }
+    if ('searchMode' in updates) {
+      updateSearchButton();
     }
   });
 }

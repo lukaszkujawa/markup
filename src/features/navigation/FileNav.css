@@ -47,6 +47,15 @@
   background: #F1F0EC;
 }
 
+.file-nav__header-button:active {
+  background: #E9E7E1;
+}
+
+.file-nav__header-button--active {
+  background: #E9E7E1;
+  color: #2C2B28;
+}
+
 .file-nav__header-button svg {
   width: 14px;
   height: 14px;

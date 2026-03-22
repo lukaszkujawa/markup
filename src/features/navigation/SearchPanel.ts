@@ -1,4 +1,4 @@
-import { searchNotes, switchToNote, type SearchResult } from '../../core';
+import { searchNotes, switchToNote, setState, type SearchResult } from '../../core';
 import { icons } from './icons';
 
 let searchInput: HTMLInputElement | null = null;
@@ -6,7 +6,17 @@ let searchResults: SearchResult[] = [];
 
 export function renderSearchPanel(): string {
   return `
-    <div class="search-panel">
+    <aside class="search-panel">
+      <div class="search-panel__top-header">
+        <div class="search-panel__top-header-title">Search</div>
+        <div class="search-panel__top-header-controls">
+          <button class="search-panel__close-btn" id="search-close-btn" title="Close search">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 5 5 L 15 15 M 15 5 L 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
       <div class="search-panel__header">
         <div class="search-panel__input-wrapper">
           <div class="search-panel__input-icon">
@@ -26,7 +36,7 @@ export function renderSearchPanel(): string {
           <p>Search across all your notes</p>
         </div>
       </div>
-    </div>
+    </aside>
   `;
 }
 
@@ -128,16 +138,26 @@ function handleResultClick(e: MouseEvent): void {
   }
 }
 
+function handleCloseSearch(): void {
+  setState({ searchMode: false });
+}
+
 export function initSearchPanel(): void {
   searchInput = document.getElementById('search-input') as HTMLInputElement;
   const resultsContainer = document.getElementById('search-results');
+  const closeBtn = document.getElementById('search-close-btn');
 
   if (searchInput) {
     searchInput.addEventListener('input', handleSearchInput);
+    searchInput.focus();
   }
 
   if (resultsContainer) {
     resultsContainer.addEventListener('click', handleResultClick);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', handleCloseSearch);
   }
 }
 
@@ -150,6 +170,11 @@ export function destroySearchPanel(): void {
   const resultsContainer = document.getElementById('search-results');
   if (resultsContainer) {
     resultsContainer.removeEventListener('click', handleResultClick);
+  }
+
+  const closeBtn = document.getElementById('search-close-btn');
+  if (closeBtn) {
+    closeBtn.removeEventListener('click', handleCloseSearch);
   }
 
   if (debounceTimer !== null) {
