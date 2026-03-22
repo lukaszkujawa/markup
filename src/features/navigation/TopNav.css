@@ -1,68 +1,85 @@
 .top-nav {
-  background: var(--color-nav-bg);
-  color: var(--color-nav-text);
-  height: var(--nav-height);
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  background: #F7F7F5;
+  height: 46px;
+  display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  justify-content: space-between;
+  border-bottom: 1px solid #E6E4DF;
+  padding: 0 12px;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  position: relative;
 }
 
 .top-nav__left {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding-left: 16px;
-  padding-right: 0;
+  padding-left: 4px;
+  flex-shrink: 0;
+}
+
+.top-nav__brand {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-nav__brand svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.top-nav__formatting {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .top-nav__center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: 0;
+  justify-content: center;
+  pointer-events: none;
+  max-width: 400px;
+}
+
+.top-nav__note-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2B2A27;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .top-nav__right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 var(--spacing-xxl);
-  gap: 12px;
-}
-
-.top-nav__logo {
-  width: 26px;
-  height: 26px;
   flex-shrink: 0;
-  opacity: 0.85;
-}
-
-.top-nav__logo svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.top-nav__actions {
-  display: flex;
-  gap: 2px;
-  align-items: center;
 }
 
 .top-nav__btn {
   background: transparent;
   border: none;
-  color: #86868b;
+  color: #6F6C66;
   cursor: pointer;
-  padding: 5px;
-  border-radius: 5px;
+  padding: 6px;
+  border-radius: 8px;
   width: 28px;
   height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background 0.12s ease, color 0.12s ease;
+  flex-shrink: 0;
 }
 
 .top-nav__btn svg {
@@ -73,68 +90,62 @@
 }
 
 .top-nav__btn:hover {
-  background: rgba(0, 0, 0, 0.035);
-  color: #48484a;
+  background: #F0EEE9;
 }
 
 .top-nav__btn:active {
-  background: rgba(0, 0, 0, 0.055);
-}
-
-.top-nav__btn--is-active {
-  background: rgba(0, 0, 0, 0.06);
-  color: #3a3a3c;
-}
-
-.top-nav__btn--is-active:hover {
-  background: rgba(0, 0, 0, 0.08);
-}
-
-.top-nav__formatting {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  padding-left: 12px;
-  margin-left: 12px;
-  border-left: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-.top-nav__btn--format {
-  width: 26px;
-  height: 26px;
-  padding: 4px;
-}
-
-.top-nav__btn--format svg {
-  width: 15px;
-  height: 15px;
-  stroke-width: 1.7px;
+  background: #E7E5DF;
+  color: #2C2B28;
 }
 
 .top-nav__layout-controls {
   display: flex;
   align-items: center;
-  gap: 1px;
-}
-
-.top-nav__layout-controls .top-nav__btn {
-  width: 28px;
+  gap: 2px;
+  background: #F0EEE9;
+  border-radius: 8px;
+  padding: 2px;
   height: 28px;
-  padding: 5px;
-  border-radius: 5px;
 }
 
-.top-nav__layout-controls .top-nav__btn svg {
+.top-nav__btn--layout {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  width: 32px;
+  height: 24px;
+  color: #7C7A73;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.top-nav__btn--layout svg {
   width: 16px;
   height: 16px;
+  display: block;
   stroke-width: 1.6px;
 }
 
-.top-nav__layout-controls .top-nav__btn--is-active {
-  background: rgba(0, 0, 0, 0.06);
-  color: #2c2c2e;
+.top-nav__btn--layout:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
-.top-nav__layout-controls .top-nav__btn--is-active:hover {
-  background: rgba(0, 0, 0, 0.08);
+.top-nav__btn--layout:active {
+  background: #FFFFFF;
+  color: #2C2B28;
+}
+
+.top-nav__btn--layout.top-nav__btn--is-active {
+  background: #FFFFFF;
+  color: #2C2B28;
+  border: 1px solid #E1DED7;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.top-nav__btn--layout.top-nav__btn--is-active:hover {
+  background: #FFFFFF;
 }

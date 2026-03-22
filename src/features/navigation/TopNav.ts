@@ -1,21 +1,22 @@
 import { getState, setState, subscribe } from '../../core';
 import { getEditorView } from '../editor';
-import { applyBold, applyItalic, applyHeading, applyCode, applyLink, applyList, applyQuote, applyTable } from '../editor/formatting';
-import { exportPreviewToPdf } from '../preview/exportPdf';
+import { applyBold, applyItalic, applyHighlight, applyCode, applyList, applyQuote, applyTable } from '../editor/formatting';
 import { icons } from './icons';
 
 let clickHandler: ((e: Event) => void) | null = null;
 let unsubscribe: (() => void) | null = null;
 
 export function renderTopNav(): string {
+  const state = getState();
+  const currentNote = state.currentNotePath ? state.notes[state.currentNotePath] : null;
+  const noteTitle = currentNote?.title || 'Untitled Note';
+
   return `
     <nav class="top-nav">
       <div class="top-nav__left">
-        <div class="top-nav__logo">
+        <div class="top-nav__brand">
           ${icons.logo}
         </div>
-      </div>
-      <div class="top-nav__center">
         <div class="top-nav__formatting">
           <button class="top-nav__btn top-nav__btn--format" id="format-bold-btn" title="Bold (Ctrl+B)">
             ${icons.bold}
@@ -23,16 +24,13 @@ export function renderTopNav(): string {
           <button class="top-nav__btn top-nav__btn--format" id="format-italic-btn" title="Italic (Ctrl+I)">
             ${icons.italic}
           </button>
-          <button class="top-nav__btn top-nav__btn--format" id="format-heading-btn" title="Heading (Ctrl+H)">
-            ${icons.heading}
+          <button class="top-nav__btn top-nav__btn--format" id="format-highlight-btn" title="Highlight">
+            ${icons.highlight}
           </button>
           <button class="top-nav__btn top-nav__btn--format" id="format-code-btn" title="Code (Ctrl+\`)">
             ${icons.code}
           </button>
-          <button class="top-nav__btn top-nav__btn--format" id="format-link-btn" title="Link (Ctrl+K)">
-            ${icons.link}
-          </button>
-          <button class="top-nav__btn top-nav__btn--format" id="format-list-btn" title="List (Ctrl+L)">
+          <button class="top-nav__btn top-nav__btn--format" id="format-list-btn" title="Bulleted List (Ctrl+L)">
             ${icons.list}
           </button>
           <button class="top-nav__btn top-nav__btn--format" id="format-quote-btn" title="Quote">
@@ -43,18 +41,18 @@ export function renderTopNav(): string {
           </button>
         </div>
       </div>
+      <div class="top-nav__center">
+        <span class="top-nav__note-title">${noteTitle}</span>
+      </div>
       <div class="top-nav__right">
-        <button class="top-nav__btn" id="export-pdf-btn" title="Export to PDF">
-          ${icons.pdf}
-        </button>
         <div class="top-nav__layout-controls">
-          <button class="top-nav__btn" id="toggle-filenav-btn" title="Toggle file navigation">
-            ${icons.layoutFileNav}
-          </button>
-          <button class="top-nav__btn" id="toggle-editor-btn" title="Toggle editor">
+          <button class="top-nav__btn top-nav__btn--layout" id="toggle-editor-btn" title="Editor">
             ${icons.layoutEditor}
           </button>
-          <button class="top-nav__btn" id="toggle-preview-btn" title="Toggle preview">
+          <button class="top-nav__btn top-nav__btn--layout" id="toggle-filenav-btn" title="Split">
+            ${icons.layoutFileNav}
+          </button>
+          <button class="top-nav__btn top-nav__btn--layout" id="toggle-preview-btn" title="Preview">
             ${icons.layoutPreview}
           </button>
         </div>
@@ -71,12 +69,6 @@ export function initTopNav(): void {
 
   clickHandler = (e) => {
     const target = e.target as HTMLElement;
-
-    const exportPdfBtn = target.closest('#export-pdf-btn');
-    if (exportPdfBtn) {
-      exportPreviewToPdf();
-      return;
-    }
 
     const toggleFileNavBtn = target.closest('#toggle-filenav-btn');
     if (toggleFileNavBtn) {
@@ -116,21 +108,15 @@ export function initTopNav(): void {
       return;
     }
 
-    const formatHeadingBtn = target.closest('#format-heading-btn');
-    if (formatHeadingBtn) {
-      applyHeading(editorView);
+    const formatHighlightBtn = target.closest('#format-highlight-btn');
+    if (formatHighlightBtn) {
+      applyHighlight(editorView);
       return;
     }
 
     const formatCodeBtn = target.closest('#format-code-btn');
     if (formatCodeBtn) {
       applyCode(editorView);
-      return;
-    }
-
-    const formatLinkBtn = target.closest('#format-link-btn');
-    if (formatLinkBtn) {
-      applyLink(editorView);
       return;
     }
 
@@ -172,11 +158,26 @@ export function initTopNav(): void {
     }
   };
 
+  const updateTitle = () => {
+    const state = getState();
+    const currentNote = state.currentNotePath ? state.notes[state.currentNotePath] : null;
+    const noteTitle = currentNote?.title || 'Untitled Note';
+
+    const titleElement = document.querySelector('.top-nav__note-title');
+    if (titleElement) {
+      titleElement.textContent = noteTitle;
+    }
+  };
+
   updateToggleStates();
+  updateTitle();
 
   unsubscribe = subscribe((updates) => {
     if ('showFileNav' in updates || 'showEditor' in updates || 'showPreview' in updates) {
       updateToggleStates();
+    }
+    if ('currentNotePath' in updates || 'notes' in updates || 'folders' in updates) {
+      updateTitle();
     }
   });
 }

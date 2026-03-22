@@ -55,7 +55,7 @@
   --transition-speed: 0.2s;
   --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 
-  --nav-height: 52px;
+  --nav-height: 46px;
   --toolbar-height: 52px;
   --footer-height: 28px;
   --file-nav-width: 240px;

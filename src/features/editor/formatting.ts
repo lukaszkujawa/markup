@@ -52,6 +52,32 @@ export function applyItalic(view: EditorView): void {
   view.focus();
 }
 
+export function applyHighlight(view: EditorView): void {
+  const selection = view.state.selection.main;
+  const selectedText = view.state.sliceDoc(selection.from, selection.to);
+
+  if (selectedText) {
+    view.dispatch({
+      changes: {
+        from: selection.from,
+        to: selection.to,
+        insert: `==${selectedText}==`
+      },
+      selection: { anchor: selection.from + 2, head: selection.to + 2 }
+    });
+  } else {
+    view.dispatch({
+      changes: {
+        from: selection.from,
+        to: selection.to,
+        insert: '===='
+      },
+      selection: { anchor: selection.from + 2 }
+    });
+  }
+  view.focus();
+}
+
 export function applyHeading(view: EditorView): void {
   const selection = view.state.selection.main;
   const line = view.state.doc.lineAt(selection.from);

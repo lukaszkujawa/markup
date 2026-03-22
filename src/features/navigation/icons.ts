@@ -113,6 +113,17 @@ export const icons = {
     </svg>
   `,
 
+  highlight: `
+    <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 4 14 L 6 14 L 12 4 L 14 4 L 16 14 L 14 14 M 7 11 L 13 11"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
+  `,
+
   quote: `
     <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
       <path d="M 7 7 C 7 5.5 6 4 4 4 C 4 7 5 9 7 9 L 7 12 M 13 7 C 13 5.5 12 4 10 4 C 10 7 11 9 13 9 L 13 12"
