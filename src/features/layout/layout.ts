@@ -1,4 +1,4 @@
-import { renderTopNav, renderFileNav, renderSearchPanel, renderFooter, initFileNav, destroyFileNav, initSearchPanel, destroySearchPanel } from '../navigation';
+import { renderTopNav, renderFileNav, renderSearchPanel, renderFooter, renderIconRail, initFileNav, destroyFileNav, initSearchPanel, destroySearchPanel, initIconRail, destroyIconRail } from '../navigation';
 import { renderEditor } from '../editor';
 import { renderPreview } from '../preview';
 import { subscribe, getState } from '../../core';
@@ -15,9 +15,12 @@ export function renderLayout(): string {
       </header>
 
       <main class="layout__content">
-        <aside class="layout__file-nav" id="sidebar-container">
-          ${state.searchMode ? renderSearchPanel() : renderFileNav()}
-        </aside>
+        <div class="layout__sidebar">
+          ${renderIconRail()}
+          <aside class="layout__file-nav" id="sidebar-container">
+            ${state.searchMode ? renderSearchPanel() : renderFileNav()}
+          </aside>
+        </div>
 
         <section class="layout__editor">
           ${renderEditor()}
@@ -86,6 +89,7 @@ function updateSidebarContent(): void {
 
 export function initLayout(): void {
   updateLayoutVisibility();
+  initIconRail();
 
   unsubscribe = subscribe((updates) => {
     if ('showFileNav' in updates || 'showEditor' in updates || 'showPreview' in updates) {
@@ -98,6 +102,8 @@ export function initLayout(): void {
 }
 
 export function destroyLayout(): void {
+  destroyIconRail();
+
   if (unsubscribe) {
     unsubscribe();
     unsubscribe = null;

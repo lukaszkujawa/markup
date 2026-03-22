@@ -1,10 +1,25 @@
 import { getState, Note, Folder } from '../../../core';
 import { CONSTANTS } from './constants';
-import { sortNotes, sortFolders, truncateTitle, formatDate, escapeHtml, countNotesInFolder } from './utils';
+import { sortNotes, sortFolders, truncateTitle, formatDate, escapeHtml } from './utils';
 
 export function renderFileNav(): string {
   return `
     <aside class="file-nav">
+      <div class="file-nav__header">
+        <div class="file-nav__header-title">Notes</div>
+        <div class="file-nav__header-controls">
+          <button class="file-nav__header-button" title="Sort">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 4 6 L 16 6 M 6 10 L 16 10 M 8 14 L 16 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="file-nav__header-button" title="Filter">
+            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 3 6 L 17 6 L 12 11 L 12 16 L 8 16 L 8 11 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
       <div class="file-nav__container">
         <div class="file-nav__list" id="file-nav-list">
           ${renderFileTree()}
@@ -33,14 +48,17 @@ export function renderNoteItem(note: Note, isActive: boolean): string {
 }
 
 export function renderFolder(folder: Folder, notesInFolder: Note[], subfoldersInFolder: Folder[], currentNotePath: string | null, depth: number = 0): string {
+  if (depth > 1) {
+    return '';
+  }
+
   const state = getState();
   const expandedClass = folder.isExpanded ? CONSTANTS.CLASSES.EXPANDED : CONSTANTS.CLASSES.COLLAPSED;
   const chevron = folder.isExpanded ? '▼' : '▶';
   const hasContent = notesInFolder.length > 0 || subfoldersInFolder.length > 0;
-  const noteCount = countNotesInFolder(folder.path, state.notes, state.folders);
 
   let folderContent = '';
-  if (folder.isExpanded && hasContent) {
+  if (folder.isExpanded && hasContent && depth < 1) {
     const sortedSubfolders = sortFolders(subfoldersInFolder);
     const sortedNotes = sortNotes(notesInFolder);
 
@@ -64,7 +82,6 @@ export function renderFolder(folder: Folder, notesInFolder: Note[], subfoldersIn
       <div class="file-nav__folder-header" draggable="true" data-folder-path="${folder.path}">
         <span class="file-nav__folder-chevron">${chevron}</span>
         <span class="file-nav__folder-name" data-folder-path="${folder.path}">${escapeHtml(folder.name)}</span>
-        <span class="file-nav__folder-count">${noteCount}</span>
       </div>
       ${folderContent}
     </div>

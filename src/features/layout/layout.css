@@ -15,8 +15,12 @@
   overflow: hidden;
 }
 
+.layout__sidebar {
+  display: flex;
+  flex-shrink: 0;
+}
+
 .layout__file-nav {
-  width: var(--file-nav-width);
   flex-shrink: 0;
 }
 

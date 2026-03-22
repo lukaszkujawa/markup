@@ -1,0 +1,55 @@
+.icon-rail {
+  width: 56px;
+  background: #F7F7F5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 12px;
+  border-right: 1px solid #E6E4DF;
+  flex-shrink: 0;
+}
+
+.icon-rail__button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 140ms cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  color: #7C7A73;
+}
+
+.icon-rail__button svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.icon-rail__button:hover {
+  background: #F0EEE9;
+}
+
+.icon-rail__button:active {
+  background: #E9E7E1;
+}
+
+.icon-rail__button--active {
+  background: #E9E7E1;
+  color: #2C2B28;
+}
+
+.icon-rail__button--disabled {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.icon-rail__button--disabled:hover {
+  background: transparent;
+}

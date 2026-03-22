@@ -1,5 +1,4 @@
-import { createNote, createNoteFolder as createFolder, deleteNote, getState, setState, subscribe } from '../../core';
-import { ask } from '@tauri-apps/plugin-dialog';
+import { getState, setState, subscribe } from '../../core';
 import { getEditorView } from '../editor';
 import { applyBold, applyItalic, applyHeading, applyCode, applyLink, applyList, applyQuote, applyTable } from '../editor/formatting';
 import { exportPreviewToPdf } from '../preview/exportPdf';
@@ -14,20 +13,6 @@ export function renderTopNav(): string {
       <div class="top-nav__left">
         <div class="top-nav__logo">
           ${icons.logo}
-        </div>
-        <div class="top-nav__actions">
-          <button class="top-nav__btn" id="toggle-search-btn" title="Search notes">
-            ${icons.search}
-          </button>
-          <button class="top-nav__btn" id="add-folder-btn" title="Add new folder">
-            ${icons.folder}
-          </button>
-          <button class="top-nav__btn" id="add-note-btn" title="Add new note">
-            ${icons.plus}
-          </button>
-          <button class="top-nav__btn" id="delete-note-btn" title="Delete current note">
-            ${icons.trash}
-          </button>
         </div>
       </div>
       <div class="top-nav__center">
@@ -87,63 +72,9 @@ export function initTopNav(): void {
   clickHandler = (e) => {
     const target = e.target as HTMLElement;
 
-    const addNoteBtn = target.closest('#add-note-btn');
-    if (addNoteBtn) {
-      createNote();
-      return;
-    }
-
-    const addFolderBtn = target.closest('#add-folder-btn');
-    if (addFolderBtn) {
-      createFolder('New Folder').then((folder) => {
-        setTimeout(() => {
-          const folderNameElement = document.querySelector(
-            `.file-nav__folder-name[data-folder-path="${folder.path}"]`
-          ) as HTMLElement;
-
-          if (folderNameElement) {
-            folderNameElement.dispatchEvent(new Event('dblclick', { bubbles: true }));
-          }
-        }, 100);
-      });
-      return;
-    }
-
-    const deleteBtn = target.closest('#delete-note-btn');
-    if (deleteBtn) {
-      const state = getState();
-      const currentNotePath = state.currentNotePath;
-
-      if (!currentNotePath) {
-        return;
-      }
-
-      const note = state.notes[currentNotePath];
-      if (!note) {
-        return;
-      }
-
-      ask(`Are you sure you want to delete "${note.title}"?`, {
-        title: 'Delete Note',
-        kind: 'warning',
-      }).then((confirmDelete) => {
-        if (confirmDelete) {
-          deleteNote(currentNotePath);
-        }
-      });
-      return;
-    }
-
     const exportPdfBtn = target.closest('#export-pdf-btn');
     if (exportPdfBtn) {
       exportPreviewToPdf();
-      return;
-    }
-
-    const toggleSearchBtn = target.closest('#toggle-search-btn');
-    if (toggleSearchBtn) {
-      const state = getState();
-      setState({ searchMode: !state.searchMode });
       return;
     }
 
@@ -226,14 +157,10 @@ export function initTopNav(): void {
 
   const updateToggleStates = () => {
     const state = getState();
-    const searchBtn = document.querySelector('#toggle-search-btn');
     const fileNavBtn = document.querySelector('#toggle-filenav-btn');
     const editorBtn = document.querySelector('#toggle-editor-btn');
     const previewBtn = document.querySelector('#toggle-preview-btn');
 
-    if (searchBtn) {
-      searchBtn.classList.toggle('top-nav__btn--is-active', state.searchMode);
-    }
     if (fileNavBtn) {
       fileNavBtn.classList.toggle('top-nav__btn--is-active', state.showFileNav);
     }
@@ -248,7 +175,7 @@ export function initTopNav(): void {
   updateToggleStates();
 
   unsubscribe = subscribe((updates) => {
-    if ('showFileNav' in updates || 'showEditor' in updates || 'showPreview' in updates || 'searchMode' in updates) {
+    if ('showFileNav' in updates || 'showEditor' in updates || 'showPreview' in updates) {
       updateToggleStates();
     }
   });
